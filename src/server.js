@@ -2,11 +2,18 @@ import express from 'express'
 import exitHook from 'async-exit-hook'
 import { env } from './configs/environment.js'
 import cors from 'cors'
-import { CLOSE_DB, CONNECT_DB } from './configs/mongoDb.js'
+import { CLOSE_DB, CONNECT_DB } from './configs/mongoDB.js'
 import { apis_v1 } from './routes/v1/index.js'
 
 const START_SERVER = () => {
   const app = express()
+
+  // Fix Cache from disk from ExpressJS
+  app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+  })
+
   app.use(express.json())
   app.use(cors({
     origin: function (origin, callback) {
