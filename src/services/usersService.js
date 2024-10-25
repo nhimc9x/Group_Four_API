@@ -32,5 +32,16 @@ export const usersService = {
 
   findUserByEmail: async (email) => {
     return await usersModel.findUserByEmail(email)
+  },
+  verifyToken: async (userId) => {
+    try {
+      const result = await usersModel.findUserByID(userId)
+      if (!result) {
+        throw new Error('Không tìm thấy user')
+      } 
+      return result 
+    } catch (error) {
+      throw error
+    }
   }
 }

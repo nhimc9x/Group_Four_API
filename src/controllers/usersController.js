@@ -44,6 +44,15 @@ export const usersController = {
     }
   },
   verifyToken: async (req, res) => {
-    res.status(200).json({ message: 'Token đã xác thực thành công' })
+    try {
+
+      const result = await usersService.verifyToken(req.jwtDecoded.id)
+      res.status(200).json({ message: 'Token đã xác thực thành công', data: result })
+  
+      
+    } catch (error) {
+      res.status(500).json({ error: 'lỗi', message: error.message })
+      
+    }
   }
 }
