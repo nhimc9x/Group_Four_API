@@ -29,5 +29,8 @@ export const roomsModel = {
   },
   getRoomsByUserId: async (userId) => {
     return await GET_DB().collection(ROOM_COLLECTION_NAME).find({ 'members.userId': userId }).toArray()
-  } 
+  },
+  updateRoom: async (roomId, data) => {
+    return await GET_DB().collection(ROOM_COLLECTION_NAME).updateOne({ _id: ObjectId.createFromHexString(roomId) }, { $set: data })
+  }
 }

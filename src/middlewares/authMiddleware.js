@@ -13,7 +13,6 @@ export const authMiddleware = {
         accesssTokenFromHeader.replace('Bearer ', ''),
         env.ACCESS_TOKEN_SECRET_SIGNATURE
       )
-      console.log('accesssTokenDecoded: ', accesssTokenDecoded)
       req.jwtDecoded = accesssTokenDecoded
       next()
     } catch (error) {

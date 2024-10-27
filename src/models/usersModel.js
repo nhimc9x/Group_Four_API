@@ -29,5 +29,13 @@ export const usersModel = {
   },
   findUserByID: async (userId) => {
     return await GET_DB().collection(USER_COLLECTION_NAME).findOne({ _id: ObjectId.createFromHexString(userId) })
+  },
+  search: async (q) => {
+    return await GET_DB().collection(USER_COLLECTION_NAME).find({
+      $or: [
+        { username: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } }
+      ]
+    }).toArray()
   }
 }

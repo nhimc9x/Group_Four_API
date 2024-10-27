@@ -12,4 +12,8 @@ Router.post('/create', authMiddleware.isAuthorized, upload.single('image'), room
 
 Router.get('/detail/:roomId', roomsController.getRoom)
 
+Router.put('/join/:roomId', authMiddleware.isAuthorized, roomsController.joinRoom)
+
+Router.put('/leave/:roomId', authMiddleware.isAuthorized, roomsController.leaveRoom)
+
 export const roomsRoute = Router

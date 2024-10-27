@@ -43,5 +43,21 @@ export const usersService = {
     } catch (error) {
       throw error
     }
+  },
+  search: async (q, myId) => {
+    try {
+      const users = await usersModel.search(q)
+      const result = users.filter(user => user._id.toString() !== myId)
+      return result.map(user => {
+        return {
+          id: user._id.toString(),
+          username: user.username,
+          email: user.email,
+          avatar: user.avatar
+        }
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }

@@ -30,5 +30,29 @@ export const roomsController = {
     } catch (error) {
       res.status(500).json({ error: 'Lấy phòng lỗi', message: error.message })
     }
+  },
+  joinRoom: async (req, res) => {
+    try {
+      let userId = req.jwtDecoded.id
+      if (req.body.userId) {
+        userId = req.body.userId
+      }
+      const { roomId } = req.params
+      const result = await roomsService.joinRoom(userId, roomId)
+      res.status(200).json({ message: 'Tham gia phòng thành công', data: result })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Tham gia phòng lỗi', message: error.message })
+    }
+  },
+  leaveRoom: async (req, res) => {
+    try {
+      const { roomId } = req.params
+      const result = await roomsService.leaveRoom(req.jwtDecoded.id, roomId)
+      res.status(200).json({ message: 'Rời phòng thành công', data: result })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Rời phòng lỗi', message: error.message })
+    }
   }
 }

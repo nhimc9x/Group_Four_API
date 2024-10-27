@@ -1,6 +1,7 @@
 import { uploadImages } from '../configs/cloudinary.js'
 import { messagesModel } from '../models/messagesModel.js'
 import { roomsModel } from '../models/roomsModel.js'
+import { usersModel } from '../models/usersModel.js'
 
 export const roomsService = {
   createNewRoom: async (ownerInfo, roomName, avatarRoom) => {
@@ -47,6 +48,42 @@ export const roomsService = {
           }
         }
       }))
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  },
+  joinRoom: async (userId, roomId) => {
+    try {
+      const room = await roomsModel.findRoomByID(roomId)
+      if (!room) {
+        throw new Error('Không tìm thấy phòng')
+      }
+      const user = room.members.find(member => member.userId === userId)
+      if (user) {
+        throw new Error('Người dùng đã tham gia phòng này rồi')
+      }
+      const userInfo = await usersModel.findUserByID(userId)
+      room.members.push({
+        userId: userInfo._id.toString(),
+        userName: userInfo.username
+      })
+      await roomsModel.updateRoom(roomId, room)
+      return roomsModel.findRoomByID(roomId)
+    } catch (error) {
+      console.log(error)
+      throw error
+    }
+  },
+  leaveRoom: async (userId, roomId) => {
+    try {
+      const room = await roomsModel.findRoomByID(roomId)
+      if (!room) {
+        throw new Error('Không tìm thấy phòng')
+      }
+      const updateData = room.members.filter(member => member.userId !== userId)
+      await roomsModel.updateRoom(roomId, { members: updateData })
+      return roomsModel.findRoomByID(roomId)
     } catch (error) {
       console.log(error)
       throw error

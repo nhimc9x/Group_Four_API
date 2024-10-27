@@ -11,4 +11,6 @@ Router.post('/signup', usersValidation, usersController.signup)
 
 Router.get('/verify_token', authMiddleware.isAuthorized, usersController.verifyToken)
 
+Router.get('/search', authMiddleware.isAuthorized, usersController.search)
+
 export const usersRoute = Router

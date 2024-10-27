@@ -54,5 +54,13 @@ export const usersController = {
       res.status(500).json({ error: 'lỗi', message: error.message })
       
     }
+  },
+  search: async (req, res) => {
+    try {
+      const result = await usersService.search(req.query.q, req.jwtDecoded.id)
+      res.status(200).json({ message: 'Tìm kiếm thành công', data: result })
+    } catch (error) {
+      res.status(500).json({ error: 'Tìm kiếm lỗi', message: error.message })
+    }
   }
 }
